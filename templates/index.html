@@ -10,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-
+    
 </head>
 
 <body class="text-white" style="background-color:black;">
@@ -18,18 +18,18 @@
 
         <!-- Jumbotron -->
         <div class="jumbotron text-center" style="background-image: url(https://www.who.int/images/default-source/health-topics/coronavirus/corona-virus-getty.jpg?sfvrsn=217a6a68_14); background-size: 100%; height: 100%;">
-            <h1 class="display-4">Global Pandemics</h1>
-            <a class="btn btn-lg text-white" style="background-color:#c1440e;" href="/scrape" role="button">Corona</a>
-            <a class="btn btn-lg text-white" style="background-color:#c1440e;" href="/scrape" role="button">Measles</a>
-            <a class="btn btn-lg text-white" style="background-color:#c1440e;" href="/scrape" role="button">Influenza</a>
-            <a class="btn btn-lg text-white" style="background-color:#c1440e;" href="/scrape" role="button">Zika</a>
+            <h1 class="display-4">Global Pandemics {{m.length}}</h1>
+            <button id="corona" class="btn btn-lg text-white" style="background-color:#c1440e;">Corona</button>
+            <button id="measles" class="btn btn-lg text-white" style="background-color:#c1440e;">Measles</button>
+            <button id="influenza" class="btn btn-lg text-white" style="background-color:#c1440e;">Influenza</button>
+            <button id="zika" class="btn btn-lg text-white" style="background-color:#c1440e;">Zika</button>
         </div>
 
         <!-- News Section -->
         <div class="container">
             <h3>Map</h3>
-            <h6 style="color: #c1440e">{{ heatmap }}</h6>
-            <p>{{ heatmap }}</p>
+            <h6 style="color: #c1440e"></h6>
+            <p></p>
         </div>
 
         <div class="container">
@@ -37,7 +37,7 @@
                 <!-- Left Image-->
                 <div class="col-lg-8 col-md-8 col-sm-12">
                     <h3>Map</h3>
-                    <img src="{{ disease.featured_image_url }}" style="max-width:100%; max-height: auto;" alt="Map Featured Image">
+                    <img src="" style="max-width:100%; max-height: auto;" alt="Map Featured Image">
                 </div>
 
                 <!-- Weather Card -->
@@ -46,7 +46,7 @@
                     <div class="card" style="width: 18rem;">
                         <div class="card-body text-white bg-dark">
                             <h6 class="card-title">Bar Chart</h6>
-                            <p class="card-text">{{ barchart }}</p>
+                            <p class="card-text">/p>
                         </div>
 
                     </div>
@@ -55,7 +55,14 @@
                     <br>
                     <h3>Table</h3>
                     <div style="max-width: 450px; max-height: 150px; font-size: 15px; margin-bottom: 65px;">
-                        {{ Top 20 Countries}}
+                    <table id="pandemic-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th class="table-head">Country</th>
+                            <th class="table-head">Confirmed Cases</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </div>
                 </div> <!-- col4 -->
             </div><!-- Row -->
@@ -69,7 +76,38 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script type="text/javascript" src="static/js/logic.js"></script>
+        <script type="text/javascript"> 
+            
+            
+            // listen for disease button and call disease graph function built in the logic.js file
+                // (you might want to check that the data exists first,
+                // you might to clear any existing viz)
+            d3.selectAll("#corona").on("click", function() {
+                let graphData = ({{ m.corona_json | safe }}); 
+                buildChart(graphData)
+            })
+            // listen for disease button and call disease graph function
+            d3.selectAll("#measles").on("click", function() {
+                let graphData = ({{ m.measles_json | safe }}); 
+                console.log(graphData) 
+            })
+            // listen for disease button and call disease graph function
+            d3.selectAll("#influenza").on("click", function() {
+                let graphData = ({{ m.influenza_json | safe }}); 
+                console.log(graphData) 
+            })
+            // listen for disease button and call disease graph function
+            d3.selectAll("#zika").on("click", function() {
+                console.log('click')
+                let graphData = ({{ m.zika_json | safe }}); 
+                console.log(graphData) 
+            })
+        
+        
+        </script>
 
 </body>
 
