@@ -45,15 +45,14 @@
 
                     <div class="card" style="width: 18rem;">
                         <div class="card-body text-white bg-dark">
-                            <h6 class="card-title">Bar Chart</h6>
-                            <p class="card-text">/p>
+                            <h6 id="bar" class="card-title">Bar Chart</h6>
                         </div>
 
                     </div>
 
                     <!-- Table -->
                     <br>
-                    <h3>Table</h3>
+                    <h3>Data</h3>
                     <div style="max-width: 450px; max-height: 150px; font-size: 15px; margin-bottom: 65px;">
                     <table id="pandemic-table" class="table table-striped">
                         <thead>
@@ -77,6 +76,7 @@
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <script type="text/javascript" src="static/js/logic.js"></script>
         <script type="text/javascript"> 
@@ -92,18 +92,18 @@
             // listen for disease button and call disease graph function
             d3.selectAll("#measles").on("click", function() {
                 let graphData = ({{ m.measles_json | safe }}); 
-                console.log(graphData) 
+                buildChart(graphData)
             })
             // listen for disease button and call disease graph function
             d3.selectAll("#influenza").on("click", function() {
                 let graphData = ({{ m.influenza_json | safe }}); 
-                console.log(graphData) 
+                buildChart(graphData) 
             })
             // listen for disease button and call disease graph function
             d3.selectAll("#zika").on("click", function() {
                 console.log('click')
                 let graphData = ({{ m.zika_json | safe }}); 
-                console.log(graphData) 
+                buildChart(graphData) 
             })
         
         

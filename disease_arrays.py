@@ -21,7 +21,7 @@ def pyscript_diseases():
     corona_data = corona_data.fillna(0)
     corona_data_country = corona_data.groupby(by="country").sum().reset_index()
     corona = corona_data_country.iloc[:,[0,-2]]
-    corona = corona.rename(columns = {corona.columns[1]: "confirmed_cases" })
+    corona = corona.rename(columns = {corona.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
     corona_json = corona.to_json(orient='records')
 
     # influenza
@@ -32,7 +32,7 @@ def pyscript_diseases():
     influenza_df2["Country"] = influenza_df2["Country"].astype(str)
     influenza_df2_byCountry = influenza_df2.groupby(by="Country").sum().drop(columns=["Year"]).reset_index()
     influenza_df2_byCountry = influenza_df2_byCountry.rename(columns = {influenza_df2_byCountry.columns[0]: "country",
-    influenza_df2_byCountry.columns[1]: "confirmed_cases" })
+    influenza_df2_byCountry.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
     influenza_json = influenza_df2_byCountry.to_json(orient='records')
 
     # zika
@@ -44,7 +44,7 @@ def pyscript_diseases():
     data_field_filtered1= data_field_filtered[pd.notnull(data_field_filtered["value"])]
     data_field_filtered1["value1"]= data_field_filtered1["value"].astype("int64")
     country_df = data_field_filtered1.groupby('country')["value1"].sum().to_frame().reset_index()
-    country_df = country_df.rename(columns = {country_df.columns[1]: "confirmed_cases" })
+    country_df = country_df.rename(columns = {country_df.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
     zika_json = country_df.to_json(orient='records')
 
     infectious_disease_array= {
