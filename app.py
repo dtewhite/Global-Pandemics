@@ -16,12 +16,5 @@ def welcome():
     return (render_template("index.html", m=diseases_data))
 
 
-# @app.route("/data")
-# def scrape():
-#     diseases = mongo.db.infectious_disease
-#     diseases_d = pyscript_diseases()
-#     diseases.update({}, diseases_d, upsert=True)
-#     return redirect("/", code=302)
-
 if __name__ == '__main__':
     app.run(debug=True)
