@@ -19,16 +19,16 @@ def pyscript_diseases():
     measles_json = final_total_measles.to_json(orient='records')
     
     # COVID-19
-    url = "https://docs.google.com/spreadsheets/d/18X1VM1671d99V_yd-cnUI1j8oSG2ZgfU_q1HfOizErA/export?format=csv&id"
-    corona_data = pd.read_csv(url)
+    corona_data = pd.read_csv("Data/COVID-19.csv")
     corona_data = corona_data.fillna(0)
     corona_data_country = corona_data.groupby(by="country").sum().reset_index()
-    corona = corona_data_country.iloc[:,[0,-2]]
+    corona = corona_data_country.iloc[:,[0,-1]]
     corona = corona.rename(columns = {corona.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
     corona = corona[corona.confirmed_cases != 0]
+    countriesdf = pd.read_csv("Data/countries.csv", encoding = "ISO-8859-1")
     corona = pd.merge(corona, countriesdf, how = 'left', on = 'country')
     corona_json = corona.to_json(orient='records')
-
+    
     # influenza
     url = "https://docs.google.com/spreadsheets/d/1l2YtEEMkziLTuo3G0C5eJcXPGYXfA95W3KOw52cslfo/export?format=csv&id"
     influenza_df = pd.read_csv(url)

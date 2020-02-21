@@ -8,9 +8,11 @@ function buildChart(data) {
     // data.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 
     data.slice(0,20).forEach((dataRow) => {
-        // use map to make a list of country & confirmed cases
+        let parsed = []
+        parsed.push(dataRow.country)
+        parsed.push(dataRow.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
         let row = tbody.append("tr"); 
-        Object.values(dataRow).forEach((val) => {
+        parsed.forEach((val) => {
             let cell = row.append("td");
             cell.text(val);
         });
@@ -19,7 +21,7 @@ function buildChart(data) {
     let tenBiggest = data.slice(0,5)
 
     let countries = tenBiggest.map(data => data.country)
-    let cases = tenBiggest.map(data => data.confirmed_cases)
+    let cases = tenBiggest.map(data => data.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
 
     let trace = {
         x: countries,
@@ -87,7 +89,7 @@ function buildChart(data) {
         color: "black",
         fillColor: "red",
         radius: Math.log(entry.confirmed_cases)*1.5
-      }).bindPopup("<h6><strong>" + entry.country + "</strong></h6> <hr> <h6>Confirmed Cases " + entry.confirmed_cases + "</h6>")
+      }).bindPopup("<h6><strong>" + entry.country + "</strong></h6> <hr> <h6>Confirmed Cases " + entry.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</h6>")
         .addTo(myMap)
     }
 }
