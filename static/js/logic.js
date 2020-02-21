@@ -27,32 +27,35 @@ function buildChart(data) {
         type: "bar"
       };
       
-      let chartData = [trace];
-      
-      let layout = {
-        xaxis: { title: "Country" },
-        yaxis: { title: "Cases"}
-      };
-      
-      Plotly.newPlot("bar", chartData, layout);   
-      
-      // let myMap = L.map("map", {
-      //   center: [0, 0],
-      //   zoom: 2
-      // });
+    let chartData = [trace];
+    
+    let layout = {
+      xaxis: { title: "Country" },
+      yaxis: { title: "Cases"}
+    };
+    
+    Plotly.newPlot("bar", chartData, layout);     
 
-      // L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-      //   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-      //   maxZoom: 18,
-      //   id: "mapbox.streets", 
-      //   accessToken: API_KEY
-      // }).addTo(myMap);
-
-      for (var i = 0; i < data.length; i++) {
-        var city = data[i];
-        L.marker(city.location)
-          .bindPopup("<h1>" + city.name + "</h1> <hr> <h3>Population " + city.population + "</h3>")
-          .addTo(myMap);
-      }
+    for (var i = 0; i < data.length; i++) {
+      let entry = data[i];
+      let location = [entry.latitude, entry.longitude]
+      L.marker(location)
+        .bindPopup("<h4>" + entry.country + "</h1> <hr> <h6>Confirmed Cases " + entry.confirmed_cases + "</h6>")
+        .addTo(myMap);
+    }
       
+}
+
+function initMap(data) {
+    let myMap = L.map("map", {
+      center: [0, 0],
+      zoom: 2
+    });
+
+    L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+      attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+      maxZoom: 18,
+      id: "mapbox.streets", 
+      accessToken: API_KEY
+    }).addTo(myMap);
 }
