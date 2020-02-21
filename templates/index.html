@@ -99,7 +99,6 @@
                 // you might to clear any existing viz)
             d3.select(window).on("load", function() {
                 let graphData = ({{ m.corona_json | safe }}); 
-                // initMap(graphData)
                 buildChart(graphData)
             });
             d3.selectAll("#corona").on("click", function() {

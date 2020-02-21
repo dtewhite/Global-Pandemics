@@ -9,10 +9,11 @@ def pyscript_diseases():
     measlesdf = pd.read_csv('https://docs.google.com/spreadsheets/d/1ogMiFRnX-N4lp1cqI0N22F9K9fFVVFfCWxw4T6W2iVw/export?format=csv&id')
     measlesdf['Total Measles Cases'] = measlesdf.sum(axis=1)
     total_cases = measlesdf
-    total_measles_cases = total_cases.drop(measlesdf.loc[:, '2018':'1980'].columns, axis = 1)
-    final_total_measles = total_measles_cases.sort_values(by='Total Measles Cases', ascending=False)
+    total_measles_cases = total_cases.loc[:, 'Country':'2018']
+    final_total_measles = total_measles_cases.sort_values(by='2018', ascending=False)
     final_total_measles = final_total_measles.rename(columns = {final_total_measles.columns[0]: "country",
         final_total_measles.columns[1]: "confirmed_cases" })
+    final_total_measles = final_total_measles[final_total_measles.confirmed_cases != 0]
     countriesdf = pd.read_csv("Data/countries.csv", encoding = "ISO-8859-1")
     final_total_measles = pd.merge(final_total_measles, countriesdf, how = 'left', on = 'country')
     measles_json = final_total_measles.to_json(orient='records')
@@ -24,6 +25,7 @@ def pyscript_diseases():
     corona_data_country = corona_data.groupby(by="country").sum().reset_index()
     corona = corona_data_country.iloc[:,[0,-2]]
     corona = corona.rename(columns = {corona.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
+    corona = corona[corona.confirmed_cases != 0]
     corona = pd.merge(corona, countriesdf, how = 'left', on = 'country')
     corona_json = corona.to_json(orient='records')
 
@@ -36,6 +38,7 @@ def pyscript_diseases():
     influenza_df2_byCountry = influenza_df2.groupby(by="Country").sum().drop(columns=["Year"]).reset_index()
     influenza_df2_byCountry = influenza_df2_byCountry.rename(columns = {influenza_df2_byCountry.columns[0]: "country",
     influenza_df2_byCountry.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
+    influenza_df2_byCountry = influenza_df2_byCountry[influenza_df2_byCountry.confirmed_cases != 0]
     influenza_df2_byCountry = pd.merge(influenza_df2_byCountry, countriesdf, how = 'left', on = 'country')
     influenza_json = influenza_df2_byCountry.to_json(orient='records')
 
@@ -49,6 +52,7 @@ def pyscript_diseases():
     data_field_filtered1["value1"]= data_field_filtered1["value"].astype("int64")
     zika_df = data_field_filtered1.groupby('country')["value1"].sum().to_frame().reset_index()
     zika_df = zika_df.rename(columns = {zika_df.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)
+    zika_df = zika_df[zika_df.confirmed_cases != 0]
     zika_df.country = zika_df.country.str.replace('Dominican_Republic', 'Dominican Republic').str.replace('El_Salvador', 'El Salvador').str.replace('Puerto_Rico','Puerto Rico').str.replace('United_States_Virgin_Islands','U.S. Virgin Islands')
     zika_df = pd.merge(zika_df, countriesdf, how = 'left', on = 'country')
     zika_json = zika_df.to_json(orient='records')

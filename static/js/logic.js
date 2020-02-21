@@ -24,14 +24,34 @@ function buildChart(data) {
     let trace = {
         x: countries,
         y: cases,
-        type: "bar"
+        type: "bar",
+        marker: {color: 'red'}
       };
       
     let chartData = [trace];
     
     let layout = {
-      xaxis: { title: "Country" },
-      yaxis: { title: "Cases"}
+      xaxis: { title: "Country",
+        titlefont: {
+          size: 16,
+          color: 'white'
+        },
+        tickfont: {
+          size: 14,
+          color: 'white'
+      }},
+      yaxis: { title: "Cases",
+        titlefont: {
+          size: 16,
+          color: 'white'
+        },
+        tickfont: {
+          size: 14,
+          color: 'white'
+      }},
+      plot_bgcolor:"black",
+      paper_bgcolor:"black",
+      border_bgcolor:"black"
     };
     
     Plotly.newPlot("bar", chartData, layout); 
@@ -50,8 +70,6 @@ function buildChart(data) {
       .attr("id", "map")
       .attr("class", "col-lg-11 col-md-11 col-sm-11")
 
-    // let container = L.DomUtil.get("map"); if(container != null){ container._leaflet_id = null; }
-
     let myMap = L.map("map", {
       center: [0, 0],
       zoom: 1.5
@@ -64,25 +82,12 @@ function buildChart(data) {
       let location = [data[i].latitude, data[i].longitude]
       // markers.addLayer(L.marker([location.coordinates[1], location.coordinates[0]])
       //   .bindPopup(response[i].descriptor));
-      L.marker(location)
-        .bindPopup("<h4>" + entry.country + "</h4> <hr> <h6>Confirmed Cases " + entry.confirmed_cases + "</h6>")
+      L.circleMarker(location, {
+        fillOpacity: 0.5,
+        color: "black",
+        fillColor: "red",
+        radius: Math.log(entry.confirmed_cases)*1.5
+      }).bindPopup("<h6><strong>" + entry.country + "</strong></h6> <hr> <h6>Confirmed Cases " + entry.confirmed_cases + "</h6>")
         .addTo(myMap)
     }
-    // myMap.invalidateSize()
-}
-
-function initMap(data) {
-    // let container = L.DomUtil.get("map"); if(container != null){ container._leaflet_id = null; }
-
-    let myMap = L.map("map", {
-      center: [50, 0],
-      zoom: 1.5
-    });
-
-    L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-      attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-      maxZoom: 18,
-      id: "mapbox.streets", 
-      accessToken: API_KEY
-    }).addTo(myMap);
 }
