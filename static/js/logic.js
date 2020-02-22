@@ -4,9 +4,6 @@ function buildChart(data) {
 
     tbody.html("");
 
-    // This is an attempt to format the numbers w/ commas
-    // data.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-
     data.slice(0,20).forEach((dataRow) => {
         let parsed = []
         parsed.push(dataRow.country)
@@ -82,13 +79,12 @@ function buildChart(data) {
     for (var i = 0; i < data.length; i++) {
       let entry = data[i];
       let location = [data[i].latitude, data[i].longitude]
-      // markers.addLayer(L.marker([location.coordinates[1], location.coordinates[0]])
-      //   .bindPopup(response[i].descriptor));
       L.circleMarker(location, {
         fillOpacity: 0.5,
         color: "black",
         fillColor: "red",
-        radius: Math.log(entry.confirmed_cases)*1.5
+        radius: Math.log(entry.confirmed_cases)*1.5,
+        // bounceOnAdd: true
       }).bindPopup("<h6><strong>" + entry.country + "</strong></h6> <hr> <h6>Confirmed Cases " + entry.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</h6>")
         .addTo(myMap)
     }
