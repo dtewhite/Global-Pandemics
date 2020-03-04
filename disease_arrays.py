@@ -21,6 +21,7 @@ def pyscript_diseases():
     # COVID-19
     corona_data = pd.read_csv("Data/COVID-19.csv")
     corona_data = corona_data.fillna(0)
+    corona_data = corona_data.rename(columns = {corona_data.columns[0]: "country" })
     corona_data_country = corona_data.groupby(by="country").sum().reset_index()
     corona = corona_data_country.iloc[:,[0,-1]]
     corona = corona.rename(columns = {corona.columns[1]: "confirmed_cases" }).sort_values(by='confirmed_cases', ascending=False)

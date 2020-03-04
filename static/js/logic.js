@@ -83,8 +83,7 @@ function buildChart(data) {
         fillOpacity: 0.5,
         color: "black",
         fillColor: "red",
-        radius: Math.log(entry.confirmed_cases)*1.5,
-        // bounceOnAdd: true
+        radius: Math.log(entry.confirmed_cases)*1.5
       }).bindPopup("<h6><strong>" + entry.country + "</strong></h6> <hr> <h6>Confirmed Cases " + entry.confirmed_cases.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</h6>")
         .addTo(myMap)
     }
